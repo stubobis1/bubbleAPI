@@ -16,29 +16,22 @@ router.post('/update', (req, res, next) => {
   console.log("/update post");
   let body = req.body;
   console.log(JSON.stringify(body));
-  if (body) {
-    if (hash(body.password) == passhash) {
-      if (body.isOn === true) {
-        if (body.durrationInMs) {
-          CurrentStatus.turnOffTime = Date.now() + body.defaultIntervalInMS;
-        }
-        else {
-          CurrentStatus.turnOffTime = Date.now() + CurrentStatus.defaultIntervalInMS;
-        }
 
-        CurrentStatus.isOn = true;
+
+    if (body.isOn === true) {
+      if (body.durrationInMs) {
+        CurrentStatus.turnOffTime = Date.now() + (body.durrationInMs - 0);
       }
-      if (body.isOn === false)
-      {
-        CurrentStatus.turnOffTime = Date.now();
-        CurrentStatus = false;
+      else {
+        CurrentStatus.turnOffTime = Date.now() + CurrentStatus.defaultIntervalInMS;
       }
+
+      CurrentStatus.isOn = true;
     }
-    else
-    {
-      console.error("invalid password");
+    else {
+      CurrentStatus.turnOffTime = Date.now();
+      CurrentStatus = false;
     }
-  }
 
   res.statusCode = 200;
   res.end();
@@ -85,17 +78,6 @@ router.get('/events', async function (req, res) {
   }
 });
 
-
-
-const username = "user";
-const passhash = "370dc8eac8c23279f6b064fcddcfbc81";
-
-function hash(value) {
-  let submittedPassHash = crypto.createHash('md5').update(value).digest('hex');
-  console.log("hash of value");
-  console.log(submittedPassHash);
-  return submittedPassHash;
-}
 
 // const favicon = new Buffer.from('AAABAAEAEBAQAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREQAAAAAAEAAAEAAAAAEAAAABAAAAEAAAAAAQAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//AAD8HwAA++8AAPf3AADv+wAA7/sAAP//AAD//wAA+98AAP//AAD//wAA//8AAP//AAD//wAA', 'base64'); 
 // router.get("/favicon.ico", function(req, res) {

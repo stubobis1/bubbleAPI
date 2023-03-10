@@ -17,17 +17,16 @@
 
             let ele = document.getElementById(id);
             let checked = ele.checked;
-
-            let password = document.getElementById("password").value;            
+     
 
             let time = document.getElementById("Timerange").value;
             console.log(`checked ${checked}`);
 
-            let res = postDataToServer({ "isOn": checked, "password": password, "durrationInMs": time * 1_000 }, "/update");
+            let res = postDataToServer({ "isOn": checked,  "durrationInMs": time * 1_000 }, "/update");
         }
 
         const source = new EventSource('/events');
-
+        let debug = new URLSearchParams(window.location.search).get("debug");
         source.addEventListener('message', message => {
             // console.log('Got', message);
             // console.log(message.data);
@@ -35,9 +34,11 @@
             // Display the event data in the `content` div
             document.querySelector('#bubbleCheckBox1').checked = dataObj.isOn;
 
-            document.querySelector('#content-1').innerHTML = dataObj.connectionHeartbeat;
-
-            document.querySelector('#content-2').innerHTML = JSON.stringify(dataObj);
+            if(debug)
+            {
+                document.querySelector('#content-1').innerHTML = dataObj.connectionHeartbeat;
+                document.querySelector('#content-2').innerHTML = JSON.stringify(dataObj);
+            }
         });
 
         async function postDataToServer(data = {}, url = "/update",) {
@@ -65,20 +66,9 @@
     <%- include ('header.ejs') %>
 
 
-        <div>
-            <form action="#" method="get">
-                <label for="user">User:</label><br/>
-                <input type="text" id="user" name="user" value="user"><br/>
-                <label for="pass">Password</label><br/>
-                <input type="password" id="password" name="pass" value="">
-                
-                <button type="submit">submit (to save pass)</button>
 
-                <br/>
-                <br/>
-                <label id="labelForTimerange" for="Timerange">Timer</label><br/>
-                <input id="Timerange" type="range" min="0.5" max="10" step="0.5"></input>
-            </form>
+        <input id="Timerange" type="range" min="0.5" max="10" step="0.5"></input>
+
         </div>
         <br><br>
         <div id="bubble-div" class="bub">
