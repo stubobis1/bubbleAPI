@@ -1,6 +1,6 @@
 const { LoopStatus, CurrentStatus } = require("./status");
-//const gpioOut = require("./raspiGPIO.js");
-const gpioOut = require("./test-raspiGPIO.js");
+const gpioOut = require("./raspiGPIO.js");
+//const gpioOut = require("./test-raspiGPIO.js");
 
 
 
