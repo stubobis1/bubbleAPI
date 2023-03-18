@@ -77,7 +77,10 @@ router.get('/events', async function (req, res) {
 
     Object.assign(dataobj, CurrentStatus);
     // Emit an SSE that contains the current 'count' as a string
-    res.write(`data: ${JSON.stringify(dataobj)}\n\n`);
+    if(connected)
+    {
+      res.write(`data: ${JSON.stringify(dataobj)}\n\n`);
+    }
   }
 });
 
