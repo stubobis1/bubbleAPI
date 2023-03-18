@@ -2,4 +2,4 @@
 
 git pull
 git reset --hard
-nodejs ./bin/www
+pm2 ./bin/www
