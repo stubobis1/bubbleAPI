@@ -48,6 +48,15 @@ router.get('/events', async function (req, res) {
   let connected = true;
   CurrentStatus.connectedClients++;
 
+
+  res.on('close', () => {
+    console.log('client dropped me');
+    connected = false;
+    CurrentStatus.connectedClients--;
+    res.end();
+    return;
+  });
+
   res.set({
     'Cache-Control': 'no-cache',
     'Content-Type': 'text/event-stream',
@@ -59,12 +68,6 @@ router.get('/events', async function (req, res) {
   // Tell the client to retry every 10 seconds if connectivity is lost
   res.write('retry: 10000\n\n');
 
-  res.on('close', () => {
-    console.log('client dropped me');
-    connected = false;
-    CurrentStatus.connectedClients--;
-    res.end();
-  });
 
 
   while (connected) {
