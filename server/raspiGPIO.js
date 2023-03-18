@@ -1,9 +1,9 @@
 //const { Gpio } = require( 'onoff' );
 
 
-
+const ouputPin = 27;
 const Gpio = require('onoff').Gpio; // Gpio class
-const led = new Gpio(17, 'out');       // Export GPIO17 as an output
+const led = new Gpio(ouputPin, 'out');       // Export GPIO17 as an output
 
 // Toggle the state of the LED connected to GPIO17 every 200ms
 // const blinkLed = _ => {
@@ -28,10 +28,14 @@ const led = new Gpio(17, 'out');       // Export GPIO17 as an output
 
 // blinkLed();
 
-
+let isLEDOn = false;
 function turnOn()
 {
-    console.log(`Turning 17 to high`)
+    if(!isLEDOn)
+    {
+        console.log(`Turning ${ouputPin} to high`)
+        isLEDOn = true;
+    }
     led.write(Gpio.HIGH, err => { 
         if (err) {
             console.error(err);
@@ -42,7 +46,12 @@ function turnOn()
 
 function turnOff()
 {
-    console.log(`Turning 17 to low`)
+    if(isLEDOn)
+    {
+        console.log(`Turning ${ouputPin} to low`)
+        isLEDOn = false;
+    }
+    
     led.write(Gpio.LOW, err => { 
         if (err) {
             console.error(err);
