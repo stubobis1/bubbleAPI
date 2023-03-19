@@ -9,7 +9,7 @@ const logger = require('morgan');
 const mainRouter = require('./server/mainRouter');
 const logicLoop = require('./server/logicLoop');
 const app = express();
-const port = 80;
+const port = 8080;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
